@@ -4,10 +4,14 @@ from django.http import HttpResponse
 from django.contrib.auth import get_user_model #사용자가 있는지 검사하는 함수
 from django.contrib import auth
 
-# 해당 html을 띄워주는 함수
+# 해당 html을 띄워주는 함수(get: 화면을 보여줄 때, post: 해당 요청이 들어왔을 때)
 def sign_up_view(request):
     if request.method == 'GET':
-        return render(request, 'user/signup.html')
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+            return render(request, 'user/signup.html')
     elif request.method == 'POST':
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
@@ -45,4 +49,8 @@ def sign_in_view(request):
         else:
             return redirect('/sign-in')
     elif request.method == 'GET':
-        return render(request, 'user/signin.html')
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+            return render(request, 'user/signin.html')
