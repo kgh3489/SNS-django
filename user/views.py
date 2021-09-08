@@ -3,6 +3,7 @@ from .models import UserModel
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model #사용자가 있는지 검사하는 함수
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 # 해당 html을 띄워주는 함수(get: 화면을 보여줄 때, post: 해당 요청이 들어왔을 때)
 def sign_up_view(request):
@@ -54,3 +55,8 @@ def sign_in_view(request):
             return redirect('/')
         else:
             return render(request, 'user/signin.html')
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
