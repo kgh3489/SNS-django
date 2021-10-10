@@ -42,8 +42,8 @@ def sign_up_view(request):
 
 def sign_in_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
         # post 요청에 담겨진 데이터를 받아옴
         me = auth.authenticate(request, username=username, password=password)  # 암호화된 비밀번호와 실제 비밀번호가 맞는지 검사
         # me = UserModel.objects.get(username=username) #UserModel db에서 username값이 받아온 데이터와 같은지 확인
@@ -53,7 +53,7 @@ def sign_in_view(request):
             # request.session['user'] = me.username
             return redirect('/')
         else:
-            return redirect('/sign-in')
+            return render(request, 'user/signin.html', {'error': '이름 또는 비밀번호를 확인해 주세요!'})
     elif request.method == 'GET':
         user = request.user.is_authenticated
         if user:
